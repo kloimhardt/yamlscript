@@ -55,6 +55,22 @@
                      blocks)))]
     (str/join "" blocks)))
 
+(def yyy-uuid (str (random-uuid)))
+
+(defn yyy-insert [stage-name output-data]
+  (if (= stage-name "construct")
+    (clojure.walk/prewalk
+      (fn [x]
+        (let [predicate #(= %{:Str yyy-uuid})]
+          (if (and (map? x)
+                   (vector? (:Lst x))
+                   (some predicate (:Lst x)))
+            {:Lst [{:Sym 'say}
+                   (update x :Lst #(into [] (remove predicate %)))]}
+            x)))
+      output-data)
+    output-data))
+
 (defn stage-with-options [stage-name stage-fn input-args]
   (if (get-in @common/opts [:debug-stage stage-name])
     (printf "*** %-9s *** " stage-name)
@@ -67,12 +83,13 @@
     (when (get-in @common/opts [:debug-stage stage-name])
       (clojure.pprint/pprint output-data)
       (println ""))
-    output-data))
+    (yyy-insert stage-name output-data)))
 
 (defn compile-with-options
   "Convert YAMLScript code string to an equivalent Clojure code string."
   [^String yamlscript-string]
-  (let [events (stage-with-options "parse"
+  (let [yamlscript-string (clojure.string/replace yamlscript-string #" : " (str " \"" yyy-uuid "\": "))
+        events (stage-with-options "parse"
                  yamlscript.parser/parse [yamlscript-string])
         groups (parse-events-to-groups events)
         n (count groups)
