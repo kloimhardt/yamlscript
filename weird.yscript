@@ -52,7 +52,7 @@ defn sieve(limit):
           =>: w1
       =>: w1
 
-result =: atom([])
+defonce: result atom([])
 
 defn calc(max):
   w =: sieve(48000)
@@ -71,4 +71,4 @@ defn calc(max):
 defonce: dummy calc(100)
 
 defn main(max=25):
-     say: result
+     say: deref(result)
