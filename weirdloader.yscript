@@ -1,0 +1,5 @@
+!yamlscript/v0
+say: "at first takes a while"
+load: "weird.yscript"
+say: "then goes fast"
+load: "weird.yscript"
