@@ -74,6 +74,14 @@
 (defn if [cond then else]
   (if cond then else))
 
+(defn compile-file [ys-file]
+  (let [ys-file (abspath ys-file (dirname @sci/file))
+        clj-code (->
+                   ys-file
+                   slurp
+                   yamlscript.compiler/compile)]
+    clj-code))
+
 (defn load-file [ys-file]
   (let [ys-file (abspath ys-file (dirname @sci/file))
         clj-code (->
