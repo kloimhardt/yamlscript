@@ -49,12 +49,15 @@
            (fn [[_ s]] `'~(-> s name symbol))))))))
 
 (defn ferret-compile-clj [clj-string]
-    (let [args {:options {:input "./core.clj"}, :arguments []}
+    (let [args {:options {:input "./core123.clj"}, :arguments []}
           options ((ferret/build-specs (-> args :options :input) args))
           code-edn (ferret-read-clojure-string clj-string)
           source    (ferret/emit-source code-edn options)
           program   (ferret/program-template source options)]
       program))
+
+;;(defonce a (spit "ftest.cpp" (ferret-compile-clj "(println (inc 7))")))
+;; clang++ ftest.cpp $(root-config --glibs --cflags --libs) -o ftest
 
 (defn parse-events-to-groups [events]
   (->> events

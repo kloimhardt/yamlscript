@@ -15,7 +15,6 @@ BINDINGS := \
     perl-alien \
     python \
     raku \
-    ruby \
     rust \
 
 DIRS := \
