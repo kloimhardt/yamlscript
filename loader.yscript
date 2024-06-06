@@ -1,0 +1,4 @@
+!yamlscript/v0
+defn plusplusplus(x): x
+y =: cpp-compile-file("loadme.yscript")
+say: "ee"
