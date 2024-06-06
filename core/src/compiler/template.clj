@@ -1,7 +1,7 @@
 (ns compiler.template
   (:import (org.antlr.stringtemplate StringTemplateGroup StringTemplate)))
 
-(defn indexed
+#_(defn indexed ;;;klm999
   "Returns a lazy sequence of [index, item] pairs, where items come
   from 's' and indexes count up from zero.
 
@@ -53,19 +53,19 @@
      (map stringify k)
      (scan-kv-to-sv v))))
 
-(defn get-view-from-classpath "Return the view template from classpath"
+#_#_:klm (defn get-view-from-classpath "Return the view template from classpath"
   [^String view-name]
   (let [st-group (StringTemplateGroup. "default")]
     (.getInstanceOf st-group view-name)))
 
 
-(defn get-view-from-dir "Return the view template from specified directory"
+#_#_:klm (defn get-view-from-dir "Return the view template from specified directory"
   [^String view-name ^String root-dir]
   (let [st-group (StringTemplateGroup. "default" root-dir)]
     (.getInstanceOf st-group view-name)))
 
 
-(defn reset-view! "Reset view template with supplied content"
+#_#_:klm (defn reset-view! "Reset view template with supplied content"
   [^StringTemplate view ^String template]
   (.setTemplate view template))
 

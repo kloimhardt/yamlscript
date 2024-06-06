@@ -863,7 +863,8 @@
      :lambda_bodies        (lambda-implementations lambdas)
      :body                 (filter #(not (empty? %)) body)
      :ferret_main          main)))
-(defn checkout-deps [path]
+
+#_(defn checkout-deps [path]
   (println "checkout-deps hopefully never called") ;;klm999
   #_(when (io/file-exists (str path "/deps.clj"))
     (let [deps (-> (read-clojure-file "deps.clj")
@@ -892,7 +893,7 @@
 (defn file-name [options]
   (str (:base-name options) "." (:source-extension options)))
 
-(defn cpp-file-name [options]
+#_#_:klm (defn cpp-file-name [options]
   (str (:output-path options) (file-name options)))
 (defn compile-options-parse-source [file]
   (compile-options {}) ;;klm999
@@ -921,6 +922,7 @@
                  (assoc h v (combine v))) {} keys)))
     (catch Exception e
       (compile-options {}))))
+
 (defn build-specs [input args]
   (fn []
     (let [args             (fn [k]
@@ -957,14 +959,15 @@
                        (not (empty? (:extra-source-files default-options)))
                        (:extra-source-files default-options)
                        :default []))))))
-(defn compile->cpp [form options]
+
+#_(defn compile->cpp [form options] ;;klm999
   (let [file-name (cpp-file-name options)
         source    (emit-source form options)
         program   (program-template source options)]
     (io/write-to-file file-name program)
     (info "compiled" "=>" file-name)
     true))
-(defn cxx-compiler [options]
+#_(defn cxx-compiler [options] ;;klm999
   (let [compiler    (if (System/getenv "CXX")
                       (System/getenv "CXX")
                       (:compiler options))
@@ -972,7 +975,7 @@
                       (seq (.split (System/getenv "CXXFLAGS") " ")))
         options     (->> (:compiler-options options) (map str))]
     [compiler (concat options env-options)]))
-(defn cxx-command [options]
+#_(defn cxx-command [options] ;;klm999
   (if (:command options)
     (flatten ["/usr/bin/env" "sh" "-c" (:command options)])
     (let [[cxx cxx-options] (cxx-compiler options)
@@ -985,7 +988,7 @@
       (flatten [cxx cxx-options source-files
                 ["-x" "c++"] (file-name options)
                 ["-o" (:binary-file options)]]))))
-(defn compile->binary [options]
+#_(defn compile->binary [options] ;;klm999
   (let [command (cxx-command options)]
     (info "building" "=>" (apply str (interpose " " command)))
     (let [build-dir (:output-path options)
@@ -1001,7 +1004,7 @@
             (warn (:err ret))
             (io/exit-failure)))
       true)))
-(defn clang-format [options]
+#_(defn clang-format [options] ;;klm999
   (let [file (cpp-file-name options)
         source (try (with-sh-dir "./"
                       (sh "clang-format" "-style" "{Standard: Cpp11}" file))
@@ -1010,7 +1013,7 @@
       (do (info "formatting code")
           (io/write-to-file file (:out source))))))
 
-(defn build-solution [spec-fn]
+#_(defn build-solution [spec-fn] ;;klm999
   (let [{:keys [input-file compile-program format-code path]} (spec-fn)]
     (info "dir =>" path)
     (info "file =>" input-file)
@@ -1022,7 +1025,7 @@
 
     (when compile-program
       (compile->binary (spec-fn)))))
-(def program-options
+#_(def program-options ;;klm999
   [["-i" "--input FILE"         "Input File" :default "./core.clj"]
    ["-o" "--output FILE"        "Output C++ File"]
    ["-b" "--binary FILE"        "Output Binary File"]
@@ -1035,7 +1038,8 @@
    [nil  "--ast"                "Print Intermediate AST"]
    [nil  "--silent"             "Silent or quiet mode"]
    ["-h" "--help"               "Print Help"]])
-(defn -main [& args]
+
+#_(defn -main [& args] ;;klm999
   (println "-main hopefully never called") ;;klm999
   #_(try
     (let [args (parse-opts args program-options)

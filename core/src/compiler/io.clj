@@ -7,7 +7,7 @@
 
 (def extension-cpp "cpp")
 
-(defn os-name []
+#_#_:klm (defn os-name []
   (let [os (-> (System/getProperty "os.name") .toLowerCase)]
     (cond (.contains os "win")      :windows
           (.contains os "mac")      :mac
@@ -19,7 +19,7 @@
 (defn exit-failure []
   (System/exit 1))
 
-(defn exit-success []
+#_#_:klm (defn exit-success []
   (System/exit 0))
 
 (defn read-file-from-url [f]
@@ -39,7 +39,7 @@
           (warn "error reading =>" f)
           (exit-failure))))))
 
-(defn write-to-file [f s]
+#_(defn write-to-file [f s] ;;klm999
   (println "write-to-file hopefully never called") ;;klm999
   #_(FileUtils/writeStringToFile (file f) (.trim s)))
 
@@ -59,7 +59,7 @@
 (defn file-base-name [f]
   (org.apache.commons.io.FilenameUtils/getBaseName f))
 
-(defn file-exists [f]
+#_(defn file-exists [f] ;;klm999
   (.exists (file f)))
 
 (defn make-file [p n e]
