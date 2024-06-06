@@ -31,12 +31,10 @@
    [org.clojure/tools.logging "0.4.1"]
                  [org.slf4j/slf4j-simple "1.7.25"]
                  [fast-zip "0.7.0"]
-                 [clj-jgit "0.8.10"]
                  [org.bituf/clj-stringtemplate "0.2"]
                  [org.clojars.amit/commons-io "1.4.0"]
                  [commons-lang "2.5"]
                  [org.flatland/ordered "1.5.7"]
-                 [watchtower "0.1.1"]
    ]
 
   :plugins

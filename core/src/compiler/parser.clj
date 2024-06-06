@@ -1,7 +1,7 @@
 (ns compiler.parser
   (:refer-clojure :exclude [drop peek])
   (:gen-class)
-  (:require [compiler.io :as io]
+  (:require ;; [compiler.io :as io]
             [fast-zip.core :as zip]
             [clojure.walk :as walk]))
 

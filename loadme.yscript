@@ -1,4 +1,4 @@
 !yamlscript/v0
 println: "hello world"
-x =: 999
+x =: 888
 println: x
