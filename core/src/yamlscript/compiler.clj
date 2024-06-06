@@ -14,6 +14,8 @@
    [clojure.pprint]
    [clojure.edn]
    [clojure.string :as str]
+   [compiler.parser :as ferret-parser]
+   [compiler.core :as ferret]
    [yamlscript.parser]
    [yamlscript.composer]
    [yamlscript.resolver]
@@ -24,6 +26,38 @@
    [yamlscript.common :as common]
    [yamlscript.debug :refer [www #_xxx]])
   (:refer-clojure :exclude [compile]))
+
+(defn ferret-read-clojure-string [s]
+  (let [ns (gensym)
+        ns-str (str ns)]
+    (create-ns ns)
+    (binding [*ns* (the-ns ns)]
+      (refer 'clojure.core)
+      (let [code-edn (read-string (str \( s \)))]
+        (-> code-edn
+          (ferret-parser/transform
+           symbol?
+           #(if (= (namespace %) ns-str)
+              (-> % name symbol)
+              %))
+          (ferret-parser/transform
+           (fn [x]
+             (and (ferret-parser/form? 'quote x)
+                  (or (= 'clojure.core/fn    (second x))
+                      (= 'clojure.core/defn  (second x))
+                      (= 'clojure.core/while (second x)))))
+           (fn [[_ s]] `'~(-> s name symbol))))))))
+
+(defn ferret-compile-clj [clj-string]
+    (let [args {:options {:input "./core123.clj"}, :arguments []}
+          options ((ferret/build-specs (-> args :options :input) args))
+          code-edn (ferret-read-clojure-string clj-string)
+          source    (ferret/emit-source code-edn options)
+          program   (ferret/program-template source options)]
+      program))
+
+;;(defonce a (spit "ftest.cpp" (ferret-compile-clj "(println (inc 7))")))
+;; clang++ ftest.cpp $(root-config --glibs --cflags --libs) -o ftest
 
 (defn parse-events-to-groups [events]
   (->> events

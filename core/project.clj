@@ -27,7 +27,15 @@
    [babashka/process "0.5.21"]
    [org.babashka/http-client "0.3.11"]
    [org.babashka/sci "0.8.41"]
-   [org.clojure/tools.cli "1.0.219"]]
+   [org.clojure/tools.cli "1.0.219"]
+   [org.clojure/tools.logging "0.4.1"]
+                 [org.slf4j/slf4j-simple "1.7.25"]
+                 [fast-zip "0.7.0"]
+                 [org.bituf/clj-stringtemplate "0.2"]
+                 [org.clojars.amit/commons-io "1.4.0"]
+                 [commons-lang "2.5"]
+                 [org.flatland/ordered "1.5.7"]
+   ]
 
   :plugins
   [[lein-exec "0.3.7"]
