@@ -54,6 +54,7 @@
 
               ;; clojure.core functions overridden by YS
               'load (sci/copy-var ys.ys/load-file nil)
+              'compile (sci/copy-var ys.ys/compile-file nil)
               'use (sci/copy-var ys.ys/use nil)
 
               ;; clojure.core functions not added by SCI
